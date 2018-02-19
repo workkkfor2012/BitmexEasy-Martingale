@@ -24,6 +24,7 @@ our parameter
 #### Position management
 1. initial position
 2. How many positions are added to each step
+
    you can modify each step as you want,or use Fibonacci sequence or double every step
 3. max position
 #### step control
@@ -33,4 +34,5 @@ our parameter
 1. percent target profit or fixed value
 #### stop loss
 1. percent target profit or fixed value
-
+#### time control
+1. set the time period if the volatility is suitable
