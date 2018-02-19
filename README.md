@@ -33,6 +33,6 @@ our parameter
 #### 3.  target profit
 - percent target profit or fixed value
 #### 4. stop loss
-- percent target profit or fixed value
+- percent stop loss or fixed value
 #### 5.  time control
 - set the time period if the volatility is suitable
