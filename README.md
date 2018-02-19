@@ -21,18 +21,18 @@ if you know the market and yourself,you can use our program,otherwise，the same
 Customized all the parameter as you want,(any parameter you want ,please feedback)
 
 our parameter
-#### Position management
-1. initial position
-2. How many positions are added to each step
+#### 1. Position management
+- initial position
+- How many positions are added to each step
 
    you can modify each step as you want,or use Fibonacci sequence or double every step
-3. max position
-#### step control
-1. you can modify each step of price gap,or use the same price gap
-2. max step
-#### target profit
-1. percent target profit or fixed value
-#### stop loss
-1. percent target profit or fixed value
-#### time control
-1. set the time period if the volatility is suitable
+- max position
+#### 2.  step control
+- you can modify each step of price gap,or use the same price gap
+- max step
+#### 3.  target profit
+- percent target profit or fixed value
+#### 4. stop loss
+- percent target profit or fixed value
+#### 5.  time control
+- set the time period if the volatility is suitable
