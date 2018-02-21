@@ -34,7 +34,7 @@ class BitmexWS:
             print("lastprice = " + str(lastprice))
             gap = lastprice - self.bc.avgPrice
             if self.n%10==0:
-                self.printlog("lastprice = " + str(lastprice) + "self.bc.pos:" + str(self.bc.pos) + " gap = " + str(
+                self.printlog("lastprice = " + str(lastprice) + "self.bc.pos:" + str(self.prepos) + " gap = " + str(
                     gap) + " self.init_zhiying = " + str(self.init_zhiying) + " self.cengshu = " + str(self.cengshu))
             self.n = self.n+1
             if lastprice < self.lowcontrolPriceline:
@@ -183,16 +183,22 @@ class BitmexWS:
     def zhiying(self):
         return self.init_zhiying
     def __init__(self):
+        # 下限价格
+        self.lowcontrolPriceline = 21000
+        # 上限价格
+        self.highcontrolPriceline = 9010
+        # 赚了多少点就卖
+        self.init_zhiying = 10
+        # 每次加仓的价格间隔
+        self.init_jiacanggap = 20
+        # 初始仓位
+        self.initorderPos = 1
         self.n = 0
         self.retryposchangetimes = 0
-        self.lowcontrolPriceline = 21000
-        self.highcontrolPriceline = 9010
+
         self.isInOrder = False
         self.isPosChange = False
         self.cengshu = 0
-        self.init_zhiying = 200
-        self.init_jiacanggap = 50
-        self.initorderPos = 1
         self.bc = bitmexclient()
         pos = self.bc.getpos()
         print("pos = ",pos)
