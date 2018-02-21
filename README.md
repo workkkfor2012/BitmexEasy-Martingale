@@ -7,6 +7,11 @@ simply say,if not win,then double bet
 
 more detailed information,please check the wiki https://en.m.wikipedia.org/wiki/Martingale_(betting_system)
 
+### what is the advantages of martingale strategy?
+You don't need to know too much speculating skills,
+All you need to do is estimate the volatility,which is pretty simple
+### what is the disadvantages of martingale strategy?
+f you are greedy,optimistic about the volatility,you will have big probability to lose money
 
 ### what is perfect martinglale?
 the answer is sad,because the key is you,you should analysis the market and know yourself
@@ -21,22 +26,24 @@ if you know the market and yourself,you can use our program,otherwise，the same
 Customized all the parameter as you want,(any parameter you want ,please feedback)
 
 our parameter
-#### 1. Position management
+---
+#### 1. **Position management**
 - initial position
 - How many positions are added to each step
 
    you can modify each step as you want,or use Fibonacci sequence or double every step
 - max position
-#### 2.  step control
+#### 2.  **step control**
 - you can modify each step of price gap,or use the same price gap
 - max step
-#### 3.  target profit
+#### 3.  **target profit**
 - percent target profit or fixed value
-#### 4. stop loss
+#### 4. **stop loss**
 - percent stop loss or fixed value
-#### 5.  time control(to do)
+#### 5.  **time control(to do)**
 - set the time period if the volatility is suitable
-#### 6. Pressure price and support price
+#### 6. **Pressure price and support price**
 - set the Pressure price and support price to reduce the risk
-#### 7. dynamic tuning（to do）
+#### 7. **dynamic tuning（to do）**
 - calculate the volatility in real time,Gain a balance between income and risk
+#### 8. **gui of configuration parameter and trade log(to do)**
