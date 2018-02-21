@@ -3,8 +3,6 @@ import hashlib
 import hmac
 import time
 import datetime
-from anaconda_project.requirements_registry.network_util import urlparse
-# import urlparse
 import urllib
 
 from bravado.client import SwaggerClient
