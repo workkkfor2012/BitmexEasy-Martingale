@@ -4,6 +4,9 @@ import hmac
 import time
 import datetime
 from anaconda_project.requirements_registry.network_util import urlparse
+# import urlparse
+import urllib
+
 from bravado.client import SwaggerClient
 from bravado.requests_client import RequestsClient
 from bravado.requests_client import Authenticator
@@ -62,7 +65,8 @@ class APIKeyAuthenticator(Authenticator):
     def generate_signature(self, secret, verb, url, nonce, data):
         """Generate a request signature compatible with BitMEX."""
         # Parse the url so we can remove the base and extract just the path.
-        parsedURL = urlparse.urlparse(url)
+        parsedURL = urllib.parse.urlparse(url)
+        # parsedURL = urlparse.urlparse(url)
         path = parsedURL.path
         if parsedURL.query:
             path = path + '?' + parsedURL.query
@@ -143,14 +147,20 @@ class bitmexclient():
     def getpos(self):
         try:
             res, http_response = self.bitMEXAuthenticated.Position.Position_get().result()
-            print(res)
+            print("res-------------------", res)
+            if res == None:
+                self.avgPrice = 0
+                return 0
             if len(res)==0:
+                self.avgPrice = 0
                 return 0
             self.avgPrice = res[0]["avgCostPrice"]
             return res[0]["currentQty"]
         except Exception as e:
-            print(e.__context__)
-            return self.getpos()
+            print("res===============================")
+            print("exception-----------------", e.__context__)
+            print("exception-----------------", e.__cause__)
+            #return self.getpos()
     def getKline(self):
         tt = datetime.datetime.now()-datetime.timedelta(minutes=10)
         utctime = local2utc(tt)
