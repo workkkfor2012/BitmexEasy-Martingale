@@ -34,5 +34,9 @@ our parameter
 - percent target profit or fixed value
 #### 4. stop loss
 - percent stop loss or fixed value
-#### 5.  time control
+#### 5.  time control(to do)
 - set the time period if the volatility is suitable
+#### 6. Pressure price and support price
+- set the Pressure price and support price to reduce the risk
+#### 7. dynamic tuning（to do）
+- calculate the volatility in real time,Gain a balance between income and risk
