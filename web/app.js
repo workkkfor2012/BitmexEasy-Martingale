@@ -11,3 +11,16 @@ $('start').onclick = () => {
 python_call_js = {
     on_last_price_update: s => $('last_price').innerHTML = s
 }
+
+let i = 1
+let a = new WebSocket('ws://127.0.0.1:8765/ws/')
+a.onmessage = (e) => {
+    document.write(e.data)
+    if (i < 5) {
+        i++
+        a.send('aaaaaa' + i)
+    }
+}
+a.onopen = () => {
+    a.send('aaaaaa')
+}

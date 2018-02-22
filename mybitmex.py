@@ -221,33 +221,39 @@ class BitmexWS:
     def run(self):
         orderBook10 = self.XBTH17.get_table('instrument')
         self.XBTH17.on('action', self.onMessage)
-        loop = asyncio.get_event_loop()
-        loop.run_forever()
+
+# bws = BitmexWS()
+# bws.run()
 
 
-# https://github.com/r0x0r/pywebview
-import webview
-
-# python 调用 js
-class python_call_js:
-    def on_last_price_update(self, n):
-        webview.evaluate_js('python_call_js.on_last_price_update('+n+')')
-
-pcj = python_call_js()
-
-
-# js 调用 python
-# Functions are executed in separate threads and are not thread-safe.
-class js_call_python:
-    def start(self):
-        print('hello world')
-        bws = BitmexWS()
-        bws.run()
-
-webview.create_window(
-    title='mybitmex',
-    url='./web/app.html',
-    js_api=js_call_python,
-    width=550,
-    height=400
+# 静态文件服务器
+import http.server
+import threading
+httpd = http.server.HTTPServer(
+    ('localhost', 8000),
+    http.server.SimpleHTTPRequestHandler
 )
+threading.Thread(target=httpd.serve_forever).start()
+
+# websocket
+import asyncio
+import websockets
+
+
+async def hello(ws):
+    print('on connect')
+    while True:
+        try:
+            name = await ws.recv()
+            print('on recv')
+            await ws.send("Hello {}!".format(name))
+        except:
+            print('on close')
+            break
+
+
+asyncio.get_event_loop().run_until_complete(
+    websockets.serve(hello, 'localhost', 8765)
+)
+
+asyncio.get_event_loop().run_forever()
