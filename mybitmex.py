@@ -9,6 +9,7 @@ import websocket
 import time
 from bitmexClient import bitmexclient
 
+
 class BitmexWS:
     def printlog(self, message):
         timestr = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -17,23 +18,24 @@ class BitmexWS:
             # s = str(s.encode("GBK"))
             print(s)
             f.write(s)
+
     def trigger(self):
         self.isInOrder = False
 
-    def onMessage(self,message):
-        #print(message)
-        a1 =  message["data"]
-        #print(a1)
-        #print(a1[0])
+    def onMessage(self, message):
+        # print(message)
+        a1 = message["data"]
+        # print(a1)
+        # print(a1[0])
         b = 'lastPrice' in a1[0]
         c = 'timestamp' in a1[0]
         if b and c:
             lastprice = float(a1[0]['lastPrice'])
             #print("lastprice = "+str(lastprice))
             timestamp = a1[0]['timestamp']
-            print("lastprice = " + str(lastprice))
+            pcj.on_last_price_update(str(lastprice))
             gap = lastprice - self.bc.avgPrice
-            if self.n%10==0:
+            if self.n % 10 == 0:
                 self.printlog("lastprice = " + str(lastprice) + "self.bc.pos:" + str(self.prepos) + " gap = " + str(
                     gap) + " self.init_zhiying = " + str(self.init_zhiying) + " self.cengshu = " + str(self.cengshu))
             self.n = self.n+1
@@ -51,47 +53,48 @@ class BitmexWS:
                             self.cengshu))
                     self.orderClose()
             isshouldgo = self.isAfterOrderPosChange()
-            if isshouldgo==False:
+            if isshouldgo == False:
                 return
-                #没有仓位，立刻开仓
-            print("prepos",self.prepos)
+                # 没有仓位，立刻开仓
+            print("prepos", self.prepos)
             if self.prepos == 0:
                 self.printlog("无仓位立刻开仓")
                 self.order()
             else:
-                if gap>1000:
+                if gap > 1000:
                     return
-                #当前持有多仓
+                # 当前持有多仓
 
-                if self.prepos>0:
-                    #大于止盈点数，平仓
-                    if gap>self.zhiying():
+                if self.prepos > 0:
+                    # 大于止盈点数，平仓
+                    if gap > self.zhiying():
                         self.printlog("持有多仓，超过盈利点数，平仓:" + str(gap))
                         self.orderClose()
                     # 处理多单亏损
                     else:
-                        #如果亏损超过初始设定，则加多仓
-                        if gap<-self.init_jiacanggap:
+                        # 如果亏损超过初始设定，则加多仓
+                        if gap < -self.init_jiacanggap:
                             self.printlog("持有多仓，亏损超过设定点数，加仓: " + str(gap))
                             self.order()
                         else:
                             pass
                             #print("持有多仓，不触发平仓和加仓 gap = "+str(gap))
                 # 当前持有空仓
-                elif self.prepos<0:
-                    #价格下跌到空仓开仓价格100点，止盈
-                    if gap<-self.zhiying():
+                elif self.prepos < 0:
+                    # 价格下跌到空仓开仓价格100点，止盈
+                    if gap < -self.zhiying():
                         self.printlog("持有空仓，超过盈利点数，平仓:" + str(gap))
                         self.orderClose()
                     # 处理空单亏损
                     else:
                         # 价格上升到空仓开仓价格超过初始设定，则加空仓
-                        if gap>self.init_jiacanggap:
+                        if gap > self.init_jiacanggap:
                             self.printlog("持有空仓，亏损超过设定点数，加仓" + str(gap))
                             self.order()
                         else:
                             pass
                             #print("持有空仓，不触发平仓和加仓 gap = " + str(gap))
+
     def orderClose(self):
         self.isInOrder = True
         self.bc.orderClose()
@@ -103,7 +106,7 @@ class BitmexWS:
     def order(self):
         self.isInOrder = True
         self.printlog("self.cengshu = " + str(self.cengshu))
-        if self.prepos==0:
+        if self.prepos == 0:
             self.bc.orderauto(1)
         else:
             self.bc.orderauto(abs(self.prepos) * 2)
@@ -159,6 +162,7 @@ class BitmexWS:
             # s = str(s.encode("GBK"))
             print(s)
             f.write(s)
+
     def isAfterOrderPosChange(self):
         # self.printlog(" isAfterOrderPosChange 仓位改变，等待"+str(self.isPosChange)+"self.prepos = "+str(self.prepos))
         if self.isPosChange == True:
@@ -182,6 +186,7 @@ class BitmexWS:
 
     def zhiying(self):
         return self.init_zhiying
+
     def __init__(self):
         # 下限价格
         self.lowcontrolPriceline = 21000
@@ -201,17 +206,17 @@ class BitmexWS:
         self.cengshu = 0
         self.bc = bitmexclient()
         pos = self.bc.getpos()
-        print("pos = ",pos)
-        self.prepos =pos
+        print("pos = ", pos)
+        self.prepos = pos
         websocket.enableTrace(True)
         self.XBTH17 = Instrument(symbol='XBTUSD',
-                              # subscribes to all channels by default, here we
-                              # limit to just these two
+                                 # subscribes to all channels by default, here we
+                                 # limit to just these two
 
-                              channels=['margin', 'instrument'],
-                              # you must set your environment variables to authenticate
-                              # see .env.example
-                              shouldAuth=True)
+                                 channels=['margin', 'instrument'],
+                                 # you must set your environment variables to authenticate
+                                 # see .env.example
+                                 shouldAuth=True)
 
     def run(self):
         orderBook10 = self.XBTH17.get_table('instrument')
@@ -219,5 +224,30 @@ class BitmexWS:
         loop = asyncio.get_event_loop()
         loop.run_forever()
 
-bws = BitmexWS()
-bws.run()
+
+# https://github.com/r0x0r/pywebview
+import webview
+
+# python 调用 js
+class python_call_js:
+    def on_last_price_update(self, n):
+        webview.evaluate_js('python_call_js.on_last_price_update('+n+')')
+
+pcj = python_call_js()
+
+
+# js 调用 python
+# Functions are executed in separate threads and are not thread-safe.
+class js_call_python:
+    def start(self):
+        print('hello world')
+        bws = BitmexWS()
+        bws.run()
+
+webview.create_window(
+    title='mybitmex',
+    url='./web/app.html',
+    js_api=js_call_python,
+    width=550,
+    height=400
+)
