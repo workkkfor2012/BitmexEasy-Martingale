@@ -3,6 +3,7 @@ import hashlib
 import hmac
 import time
 import datetime
+
 import urllib
 
 from bravado.client import SwaggerClient
@@ -95,8 +96,10 @@ class bitmexclient():
         bitMEX = SwaggerClient.from_url(
           SPEC_URI,
           config=config)
-        API_KEY = ''
-        API_SECRET = ''
+        # API_KEY = ''
+        # API_SECRET = ''
+        API_KEY = 'VjcxqcfTxwBPPluMIYkp0H_9'
+        API_SECRET = '5J_jfDms6Cdw34Y5d9NWleZW3Z0dMZ7Npqksc4IkqK3qQBfj'
         request_client = RequestsClient()
         print("websocket start")
         request_client.authenticator = APIKeyAuthenticator(HOST, API_KEY, API_SECRET)
@@ -140,7 +143,6 @@ class bitmexclient():
             print(res)
         except Exception:
             print(Exception)
-        self.getpos()
 
     def getpos(self):
         try:
@@ -158,7 +160,7 @@ class bitmexclient():
             print("res===============================")
             print("exception-----------------", e.__context__)
             print("exception-----------------", e.__cause__)
-            #return self.getpos()
+            return self.getpos()
     def getKline(self):
         tt = datetime.datetime.now()-datetime.timedelta(minutes=10)
         utctime = local2utc(tt)
