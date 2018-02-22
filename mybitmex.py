@@ -33,7 +33,7 @@ class BitmexWS:
             lastprice = float(a1[0]['lastPrice'])
             #print("lastprice = "+str(lastprice))
             timestamp = a1[0]['timestamp']
-            pcj.on_last_price_update(str(lastprice))
+            # pcj.on_last_price_update(str(lastprice))!!!!!!!!!!!!!!!!!
             gap = lastprice - self.bc.avgPrice
             if self.n % 10 == 0:
                 self.printlog("lastprice = " + str(lastprice) + "self.bc.pos:" + str(self.prepos) + " gap = " + str(
@@ -234,11 +234,12 @@ httpd = http.server.HTTPServer(
     http.server.SimpleHTTPRequestHandler
 )
 threading.Thread(target=httpd.serve_forever).start()
+# http://localhost:8000/web/app.html
+
 
 # websocket
 import asyncio
 import websockets
-
 
 async def hello(ws):
     print('on connect')
@@ -253,7 +254,7 @@ async def hello(ws):
 
 
 asyncio.get_event_loop().run_until_complete(
-    websockets.serve(hello, 'localhost', 8765)
+    websockets.serve(hello, 'localhost', 3000)
 )
 
 asyncio.get_event_loop().run_forever()
