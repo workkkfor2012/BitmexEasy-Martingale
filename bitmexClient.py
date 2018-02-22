@@ -98,8 +98,8 @@ class bitmexclient():
           config=config)
         # API_KEY = ''
         # API_SECRET = ''
-        API_KEY = 'VjcxqcfTxwBPPluMIYkp0H_9'
-        API_SECRET = '5J_jfDms6Cdw34Y5d9NWleZW3Z0dMZ7Npqksc4IkqK3qQBfj'
+        API_KEY = ''
+        API_SECRET = ''
         request_client = RequestsClient()
         print("websocket start")
         request_client.authenticator = APIKeyAuthenticator(HOST, API_KEY, API_SECRET)
