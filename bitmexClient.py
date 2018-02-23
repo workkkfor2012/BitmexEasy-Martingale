@@ -83,6 +83,8 @@ class APIKeyAuthenticator(Authenticator):
         return signature
 
 class bitmexclient():
+    API_KEY = ""
+    API_SECRET = ""
     def __init__(self):
         self.initTradeSide = "Buy"
         HOST = "https://www.bitmex.com"
@@ -98,11 +100,9 @@ class bitmexclient():
           config=config)
         # API_KEY = ''
         # API_SECRET = ''
-        API_KEY = ''
-        API_SECRET = ''
         request_client = RequestsClient()
         print("websocket start")
-        request_client.authenticator = APIKeyAuthenticator(HOST, API_KEY, API_SECRET)
+        request_client.authenticator = APIKeyAuthenticator(HOST, self.API_KEY, self.API_SECRET)
         self.bitMEXAuthenticated = SwaggerClient.from_url(
           SPEC_URI,
           config=config,
