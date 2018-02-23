@@ -41,7 +41,7 @@ class BitmexWS:
             gap = lastprice - self.bc.avgPrice
             if self.n % 10 == 0:
                 printlog("lastprice = " + str(lastprice) + "self.bc.pos:" + str(self.prepos) + " gap = " + str(
-                    gap) + " self.init_zhiying = " + str(self.init_zhiying) + " self.cengshu = " + str(self.cengshu))
+                    gap) + " self.init_zhiying = " + str(self.targetProfit) + " self.cengshu = " + str(self.cengshu))
             self.n = self.n+1
             if lastprice < self.lowcontrolPriceline:
                 if self.bc.pos > 0 and self.cengshu >= 5:
@@ -122,40 +122,40 @@ class BitmexWS:
             # self.mypos = self.mypos + self.mypos * 2
         self.cengshu = self.cengshu + 1
         if self.cengshu == 1:
-            self.init_zhiying = 10
+            self.targetProfit = 10
             self.init_jiacanggap = 10
         elif self.cengshu == 2:
-            self.init_zhiying = 15
+            self.targetProfit = 15
             self.init_jiacanggap = 15
         elif self.cengshu == 3:
-            self.init_zhiying = 50
+            self.targetProfit = 50
             self.init_jiacanggap = 70
         elif self.cengshu == 4:
-            self.init_zhiying = 50
+            self.targetProfit = 50
             self.init_jiacanggap = 70
         elif self.cengshu == 5:
-            self.init_zhiying = 50
+            self.targetProfit = 50
             self.init_jiacanggap = 70
         elif self.cengshu == 6:
-            self.init_zhiying = 50
+            self.targetProfit = 50
             self.init_jiacanggap = 70
         elif self.cengshu == 7:
-            self.init_zhiying = 50
+            self.targetProfit = 50
             self.init_jiacanggap = 70
         elif self.cengshu == 8:
-            self.init_zhiying = 50
+            self.targetProfit = 50
             self.init_jiacanggap = 70
         elif self.cengshu == 9:
-            self.init_zhiying = 20
+            self.targetProfit = 20
             self.init_jiacanggap = 160
         elif self.cengshu == 10:
-            self.init_zhiying = 20
+            self.targetProfit = 20
             self.init_jiacanggap = 160
         elif self.cengshu == 11:
-            self.init_zhiying = 20
+            self.targetProfit = 20
             self.init_jiacanggap = 160
         elif self.cengshu == 12:
-            self.init_zhiying = 20
+            self.targetProfit = 20
             self.init_jiacanggap = 160
         self.isPosChange = True
 
@@ -181,7 +181,7 @@ class BitmexWS:
             return True
 
     def zhiying(self):
-        return self.init_zhiying
+        return self.targetProfit
 
     def __init__(self):
         # 下限价格
@@ -189,7 +189,7 @@ class BitmexWS:
         # 上限价格
         self.highcontrolPriceline = 9010
         # 赚了多少点就卖
-        self.init_zhiying = 10
+        self.targetProfit = 10
         # 每次加仓的价格间隔
         self.init_jiacanggap = 20
         # 初始仓位
@@ -200,10 +200,7 @@ class BitmexWS:
         self.isInOrder = False
         self.isPosChange = False
         self.cengshu = 0
-        self.bc = bitmexclient()
-        pos = self.bc.getpos()
-        print("pos = ", pos)
-        self.prepos = pos
+
         websocket.enableTrace(True)
         self.XBTH17 = Instrument(symbol='XBTUSD',
                                  # subscribes to all channels by default, here we
@@ -214,14 +211,25 @@ class BitmexWS:
                                  # see .env.example
                                  shouldAuth=True)
 
-    def run(self):
+    def run(self, settingidc):
+        # 下限价格
+        self.lowcontrolPriceline = settingidc["low"]
+        # 上限价格
+        self.highcontrolPriceline = settingidc["high"]
+        # 赚了多少点就卖
+        self.targetProfit = settingidc["targetProfit"]
+        # 每次加仓的价格间隔
+        self.init_jiacanggap = settingidc["priceGap"]
+        # 初始仓位
+        self.initorderPos = settingidc["initPos"]
+        self.bc.API_KEY = settingidc["API_KEY"]
+        self.bc.API_SECRET = settingidc["API_SECRET"]
+        self.bc = bitmexclient()
+        pos = self.bc.getpos()
+        print("pos = ", pos)
+        self.prepos = pos
         orderBook10 = self.XBTH17.get_table('instrument')
         self.XBTH17.on('action', self.onMessage)
-
-
-
-
-
 
 
 # 静态文件服务器
