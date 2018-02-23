@@ -1,26 +1,15 @@
-
 let $ = id => document.getElementById(id)
+let start = $('start')
+let status = $('status')
+let config = $('config')
 
-$('start').onclick = () => {
-    $('start').hidden = true
-    pywebview.api.start()
+let ws = new WebSocket('ws://127.0.0.1:3000')
+
+ws.onmessage = (e) => {
+    start.hidden = true
+    status.innerText = e.data
 }
 
+start.onclick = () =>
+    ws.send(config.innerText)
 
-
-python_call_js = {
-    on_last_price_update: s => $('last_price').innerHTML = s
-}
-
-let i = 1
-let a = new WebSocket('ws://127.0.0.1:3000')
-a.onmessage = (e) => {
-    document.write(e.data)
-    if (i < 5) {
-        i++
-        a.send('aaaaaa' + i)
-    }
-}
-a.onopen = () => {
-    a.send('aaaaaa')
-}
