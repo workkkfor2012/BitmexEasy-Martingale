@@ -13,7 +13,7 @@ python_call_js = {
 }
 
 let i = 1
-let a = new WebSocket('ws://127.0.0.1:8765/ws/')
+let a = new WebSocket('ws://127.0.0.1:3000')
 a.onmessage = (e) => {
     document.write(e.data)
     if (i < 5) {
