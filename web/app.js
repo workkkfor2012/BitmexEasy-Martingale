@@ -10,6 +10,11 @@ ws.onmessage = (e) => {
     status.innerText = e.data
 }
 
-start.onclick = () =>
-    ws.send(config.innerText)
+start.onclick = () => {
+    let code = `(()=>{
+        return ${config.value}
+    })()`
+    let s = JSON.stringify(eval(code))
+    ws.send(s)
+}
 

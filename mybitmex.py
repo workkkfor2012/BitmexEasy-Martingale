@@ -35,9 +35,9 @@ class BitmexWS:
 
             # 同步状态
             sendToAll({
-                "lastprice":lastprice
+                "lastprice": lastprice
             })
-            
+
             gap = lastprice - self.bc.avgPrice
             if self.n % 10 == 0:
                 printlog("lastprice = " + str(lastprice) + "self.bc.pos:" + str(self.prepos) + " gap = " + str(
@@ -184,6 +184,16 @@ class BitmexWS:
         return self.targetProfit
 
     def __init__(self):
+        self.isRun = False
+
+    def run(self, settingidc):
+        if(self.isRun):
+            return
+        self.isRun = True
+        print('开始运行', settingidc)
+
+
+
         # 下限价格
         self.lowcontrolPriceline = 21000
         # 上限价格
@@ -211,7 +221,13 @@ class BitmexWS:
                                  # see .env.example
                                  shouldAuth=True)
 
-    def run(self, settingidc):
+
+
+
+
+
+
+        
         # 下限价格
         self.lowcontrolPriceline = settingidc["low"]
         # 上限价格
@@ -232,6 +248,8 @@ class BitmexWS:
         self.XBTH17.on('action', self.onMessage)
 
 
+
+
 # 静态文件服务器
 import http.server
 import threading
@@ -248,41 +266,22 @@ import websockets
 import json
 
 stringify = json.JSONEncoder().encode
-paarse = json.JSONDecoder().decode
-
-bws = BitmexWS()
-
-# 实现一下这个函数!!!! 
-bws.run({
-    "apiKey":'xxxx',
-    "aa":'xxxx',
-    "bb":'xxxx',
-    "cc":'xxxx',
-})
-
-
-
-
-
-
-
+parse = json.JSONDecoder().decode
 
 clients = []
+bws = BitmexWS()
 
 def sendToAll(obj):
     str = stringify(obj)
     for ws in clients:
         asyncio.get_event_loop().create_task(ws.send(str))
 
-def onRecv(str):
-    print('on recv',str)
-
 async def hello(ws, path):
     clients.append(ws)
     while True:
         try:
             str = await ws.recv()
-            onRecv(str)
+            bws.run(parse(str))
         except:
             clients.remove(ws)
             break
