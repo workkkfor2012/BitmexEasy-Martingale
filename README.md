@@ -1,4 +1,4 @@
-# Bitmex-Easy-Martingale
+# BitmexEasy-Martingale
 
 ### what is martingale?
 simply say,if not win,then double bet
