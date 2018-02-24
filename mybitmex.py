@@ -191,65 +191,48 @@ class BitmexWS:
             return
         self.isRun = True
         print('开始运行', settingidc)
-
-
-
         # 下限价格
-        self.lowcontrolPriceline = 21000
+        self.lowcontrolPriceline = settingidc["low"]
+        print("self.lowcontrolPriceline", self.lowcontrolPriceline)
         # 上限价格
-        self.highcontrolPriceline = 9010
+        self.highcontrolPriceline = settingidc["high"]
+        print("self.highcontrolPriceline", self.highcontrolPriceline)
         # 赚了多少点就卖
-        self.targetProfit = 10
+        self.targetProfit = settingidc["targetProfit"]
+        print("self.targetProfit", self.targetProfit)
         # 每次加仓的价格间隔
-        self.init_jiacanggap = 20
+        self.init_jiacanggap = settingidc["priceGap"]
+        print("self.init_jiacanggap", self.init_jiacanggap)
         # 初始仓位
-        self.initorderPos = 1
+        self.initorderPos = settingidc["initPos"]
+        print("self.initorderPos", self.initorderPos)
+        API_KEY = settingidc["API_KEY"]
+        print("API_KEY", API_KEY)
+        API_SECRET = settingidc["API_SECRET"]
+        print("API_SECRET", API_SECRET)
+        print("1")
         self.n = 0
         self.retryposchangetimes = 0
-
         self.isInOrder = False
         self.isPosChange = False
         self.cengshu = 0
-
         websocket.enableTrace(True)
+        print("2")
         self.XBTH17 = Instrument(symbol='XBTUSD',
                                  # subscribes to all channels by default, here we
                                  # limit to just these two
-
                                  channels=['margin', 'instrument'],
                                  # you must set your environment variables to authenticate
                                  # see .env.example
                                  shouldAuth=True)
-
-
-
-
-
-
-
-        
-        # 下限价格
-        self.lowcontrolPriceline = settingidc["low"]
-        # 上限价格
-        self.highcontrolPriceline = settingidc["high"]
-        # 赚了多少点就卖
-        self.targetProfit = settingidc["targetProfit"]
-        # 每次加仓的价格间隔
-        self.init_jiacanggap = settingidc["priceGap"]
-        # 初始仓位
-        self.initorderPos = settingidc["initPos"]
-        self.bc.API_KEY = settingidc["API_KEY"]
-        self.bc.API_SECRET = settingidc["API_SECRET"]
-        self.bc = bitmexclient()
+        print("3")
+        self.bc = bitmexclient(API_KEY, API_SECRET)
+        print("4")
         pos = self.bc.getpos()
         print("pos = ", pos)
         self.prepos = pos
         orderBook10 = self.XBTH17.get_table('instrument')
         self.XBTH17.on('action', self.onMessage)
-
-
-
-
 # 静态文件服务器
 import http.server
 import threading

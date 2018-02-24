@@ -1,31 +1,105 @@
-<div>
-
-    <h3>status:</h3>
-    <div id="status">
-    </div>
-
-    <h3>config:</h3>
-    <textarea id="config" rows="20" cols="100">
-        {
-            //下限价格
-            low:9000,
-            //上限价格
-            high:12000,
-            //赚了多少点就卖
-            targetProfit:10,
-            //每次加仓的价格间隔
-            priceGap:20,
-            // 初始仓位
-            initPos:1,
-            API_KEY:'xxxx',
-            API_SECRET:'xxxx'
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <style>
+        header {
+            background: rgb(43, 43, 43);
+            height: 70px;
+            color: #fff;
         }
-    </textarea>
-    <hr>
-    <button id="start">
-        <h1>start</h1>
-    </button>
-</div>
 
+        body {
+            background: rgba(0, 0, 0, 0.6);
+            font-size: 16px;
+            color: #000;
+            margin: 0;
+            padding: 0;
+        }
+
+        section {
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        .logo {
+            width: 10%;
+            float: left;
+            margin-top: 20px;
+            min-width: 100px;
+        }
+
+        button {
+            width: 160px;
+            height: 40px;
+            font-size: 22px;
+            margin: 60px 0 0 40%;
+            border-radius: 6px;
+        }
+
+        #status, #config {
+            min-height: 160px;
+        }
+
+        #config input {
+            width: 40%;
+            height: 30px;
+            margin-right: 10px;
+            min-width: 120px;
+        }
+
+        #config p span {
+            font-weight: bold;
+        }
+
+        textarea {
+            width: 100%;
+            margin-bottom: 20px;
+            color: #000;
+            background-color: #efefef;
+        }
+
+        .center {
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        h2 {
+            font-size: 20px;
+            margin-left: 40%;
+            line-height: 70px;
+            font-size: 20px;
+        }
+
+    </style>
+<body>
+
+<header>
+    <img src="bitmex-logo-alt-white.png" class="logo">
+    <h2> easy matin</h2>
+    <div id="status">
+</header>
+<section>
+    <h3>status:</h3>
+    </div>
+    <div id="config">
+        <h3>config:</h3>
+        <div class="center">
+
+            <p><input type="text"><span> Support Price</span></p>
+            <p><input type="text"><span> Pressure Price</span></p>
+            <p><input type="text"><span> Target Price</span></p>
+            <p><input type="text"><span> Price Gap</span></p>
+            <p><input type="text"><span> Init Pos</span></p></div>
+        <p><input type="text"><span> API KEY</span></p></div>
+    <p><input type="text"><span> API SECRET</span></p></div>
+    </div>
+    <button id="start">
+        start !
+    </button>
+</section>
 
 <script src="app.js"></script>
+</body>
+</html>
+
+
