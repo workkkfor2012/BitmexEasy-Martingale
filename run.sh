@@ -1,2 +1,2 @@
 cd `dirname $0`
-python3 mybitmex.py
+python3 runMartingale.py

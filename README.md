@@ -1,4 +1,4 @@
-# pro-martingale-Bitmex
+# Bitmex-Easy-Martingale
 
 ### what is martingale?
 simply say,if not win,then double bet
@@ -7,22 +7,20 @@ simply say,if not win,then double bet
 
 more detailed information,please check the wiki https://en.m.wikipedia.org/wiki/Martingale_(betting_system)
 
-### what is the advantages of martingale strategy?
-You don't need to know too much speculating skills,
-All you need to do is estimate the volatility,which is pretty simple
-### what is the disadvantages of martingale strategy?
-f you are greedy,optimistic about the volatility,you will have big probability to lose money
+### what is key of martinglale?
+the key is you,you should analysis the market and know yourself
 
-### what is perfect martinglale?
-the answer is sad,because the key is you,you should analysis the market and know yourself
+market: Volatility in a period of time
 
-market:Volatility in a period of time
-
-yourself:to bear the risk ability
+yourself: to bear the risk ability
 
 if you know the market and yourself,you can use our program,otherwise，the same as other strategy, you will have big probability to lose money
 
 ### what can our program do?
+our program is B/S ,We are designed to run on the server,you can config the parameter via browser
+
+run the "run.sh" to start the server,and type:localhost:8000 in browser to config the parameter
+
 Customized all the parameter as you want,(any parameter you want ,please feedback)
 
 our parameter
