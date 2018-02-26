@@ -196,15 +196,6 @@ class BitmexWS:
         self.isRun = True        
         print('开始运行', settingidc)
 
-        # 读取这些key
-        # supportPrice
-        # pressurePrice
-        # targetPrice
-        # priceGap
-        # initPos
-        # API_KEY
-        # API_SECRET
-
 
         # 下限价格
         self.lowcontrolPriceline = settingidc["low"]
