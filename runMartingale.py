@@ -186,11 +186,26 @@ class BitmexWS:
     def __init__(self):
         self.isRun = False
 
-    def run(self, settingidc):
+
+    def stopRun(sef):
+        print('...')
+
+    def startRun(self, settingidc):
         if(self.isRun):
             return
-        self.isRun = True
+        self.isRun = True        
         print('开始运行', settingidc)
+
+        # 读取这些key
+        # supportPrice
+        # pressurePrice
+        # targetPrice
+        # priceGap
+        # initPos
+        # API_KEY
+        # API_SECRET
+
+
         # 下限价格
         self.lowcontrolPriceline = settingidc["low"]
         print("self.lowcontrolPriceline", self.lowcontrolPriceline)
@@ -268,7 +283,7 @@ async def hello(ws, path):
             print('recv',str)
             dic = parse(str)
             print('recv',dic)
-            bws.run(dic)
+            bws.startRun(dic)
         except:
             print('-')
             clients.remove(ws)            
