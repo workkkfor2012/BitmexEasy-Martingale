@@ -260,13 +260,18 @@ def sendToAll(obj):
         asyncio.get_event_loop().create_task(ws.send(str))
 
 async def hello(ws, path):
-    clients.append(ws)
+    print('+')
+    clients.append(ws)    
     while True:
         try:
             str = await ws.recv()
-            bws.run(parse(str))
+            print('recv',str)
+            dic = parse(str)
+            print('recv',dic)
+            bws.run(dic)
         except:
-            clients.remove(ws)
+            print('-')
+            clients.remove(ws)            
             break
 
 asyncio.get_event_loop().run_until_complete(

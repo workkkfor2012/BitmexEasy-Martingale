@@ -1,6 +1,7 @@
 <html>
+
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <style>
         header {
             background: rgb(43, 43, 43);
@@ -36,7 +37,8 @@
             border-radius: 6px;
         }
 
-        #status, #config {
+        #status,
+        #config {
             min-height: 160px;
         }
 
@@ -69,37 +71,62 @@
             line-height: 70px;
             font-size: 20px;
         }
-
     </style>
-<body>
 
-<header>
-    <img src="bitmex-logo-alt-white.png" class="logo">
-    <h2> Easy Martingale</h2>
-    <div id="status">
-</header>
-<section>
-    <h3>status:</h3>
-    </div>
-    <div id="config">
-        <h3>config:</h3>
-        <div class="center">
+    <body>
 
-            <p><input type="text"><span> Support Price</span></p>
-            <p><input type="text"><span> Pressure Price</span></p>
-            <p><input type="text"><span> Target Price</span></p>
-            <p><input type="text"><span> Price Gap</span></p>
-            <p><input type="text"><span> Init Pos</span></p></div>
-        <p><input type="text"><span> API KEY</span></p></div>
-    <p><input type="text"><span> API SECRET</span></p></div>
-    </div>
-    <button id="start">
-        start !
-    </button>
-</section>
 
-<script src="app.js"></script>
-</body>
+        <header>
+            <img src="bitmex-logo-alt-white.png" class="logo">
+            <h2> Easy Martingale</h2>
+            <div id="status">
+        </header>
+
+        <section>
+            <h3>status:</h3>
+
+            <h3>config:</h3>
+            <div class="center">
+                <p>
+                    <input type="text" id="supportPrice">
+                    <span>Support Price</span>
+                </p>
+                <p>
+                    <input type="text" id="pressurePrice">
+                    <span>Pressure Price</span>
+                </p>
+                <p>
+                    <input type="text" id="targetPrice">
+                    <span>Target Price</span>
+                </p>
+                <p>
+                    <input type="text" id="priceGap">
+                    <span>Price Gap</span>
+                </p>
+                <p>
+                    <input type="text" id="initPos">
+                    <span>Init Pos</span>
+                </p>
+            </div>
+            <p>
+                <input type="text" id="API_KEY">
+                <span>API KEY</span>
+            </p>
+            </div>
+            <p>
+                <input type="text" id="API_SECRET">
+                <span>API SECRET</span>
+            </p>
+            </div>
+
+
+
+            <button id="start">
+                start !
+            </button>
+        </section>
+
+        <script src="app.js"></script>
+    </body>
+
 </html>
-
-

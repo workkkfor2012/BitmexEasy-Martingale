@@ -11,10 +11,16 @@ ws.onmessage = (e) => {
 }
 
 start.onclick = () => {
-    let code = `(()=>{
-        return ${config.value}
-    })()`
-    let s = JSON.stringify(eval(code))
+    let obj = {
+        supportPrice: $('supportPrice').value,
+        pressurePrice: $('pressurePrice').value,
+        targetPrice: $('targetPrice').value,
+        priceGap: $('priceGap').value,
+        initPos: $('initPos').value,
+        API_KEY: $('API_KEY').value,
+        API_SECRET: $('API_SECRET').value,
+    }
+    let s = JSON.stringify(obj)
     ws.send(s)
 }
 
