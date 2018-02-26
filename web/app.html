@@ -1,7 +1,6 @@
 <html>
-
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <style>
         header {
             background: rgb(43, 43, 43);
@@ -37,8 +36,7 @@
             border-radius: 6px;
         }
 
-        #status,
-        #config {
+        #status, #config {
             min-height: 160px;
         }
 
@@ -48,20 +46,17 @@
             margin-right: 10px;
             min-width: 120px;
         }
-
         #config p span {
             font-weight: bold;
         }
-
         textarea {
             width: 100%;
             margin-bottom: 20px;
             color: #000;
             background-color: #efefef;
         }
-
         .center {
-            width: 80%;
+            width: 45%;
             margin: 0 auto;
         }
 
@@ -72,61 +67,41 @@
             font-size: 20px;
         }
     </style>
-
-    <body>
-
-
-        <header>
-            <img src="bitmex-logo-alt-white.png" class="logo">
-            <h2> Easy Martingale</h2>
-            <div id="status">
-        </header>
-
-        <section>
-            <h3>status:</h3>
-
-            <h3>config:</h3>
-            <div class="center">
-                <p>
-                    <input type="text" id="supportPrice">
-                    <span>Support Price</span>
-                </p>
-                <p>
-                    <input type="text" id="pressurePrice">
-                    <span>Pressure Price</span>
-                </p>
-                <p>
-                    <input type="text" id="targetPrice">
-                    <span>Target Price</span>
-                </p>
-                <p>
-                    <input type="text" id="priceGap">
-                    <span>Price Gap</span>
-                </p>
-                <p>
-                    <input type="text" id="initPos">
-                    <span>Init Pos</span>
-                </p>
-            </div>
-            <p>
-                <input type="text" id="API_KEY">
-                <span>API KEY</span>
-            </p>
-            </div>
-            <p>
-                <input type="text" id="API_SECRET">
-                <span>API SECRET</span>
-            </p>
-            </div>
-
-
-
-            <button id="start">
-                start !
-            </button>
-        </section>
-
-        <script src="app.js"></script>
-    </body>
-
+<body>
+<header>
+    <img src="bitmex-logo-alt-white.png" class="logo">
+    <h2> Easy Martingale</h2>
+    <div id="status">
+</header>
+<section class="center">
+    <h3>status:</h3>
+    <h4>if need more trade detail,please read the log.txt which is in project folder</h4>
+    </div>
+    <div id="config">
+        <h3>config:</h3>
+        <span class="center">
+            <span> Price Gap:if set 100,it will be double the position when price go high or low 100 point  </span>
+            <p><input type="text"></p>
+            <span> Init Pos:the first trade position</span>
+            <p><input type="text"></p>
+            <span> Support Price:if current price is lower than support price,it may be a big fall,which is dangerous</span>
+            <p><input type="text"></p>
+            <span> Pressure Price:if current price is higher than Pressure price,it may be a big break,which is dangerous</span>
+            <p><input type="text"></p>
+            <span> Target Profit:how much money you want earn per trade</span>
+            <p><input type="text"></p>
+            <span> API KEY:in you bitmex account</span>
+            <p><input type="text"></p>
+            <span> API SECRET:in you bitmex account</span>
+            <p><input type="text"></p>
+        </span>
+    </div>
+    <button id="start">
+        start !
+    </button>
+</section>
+<script src="app.js"></script>
+</body>
 </html>
+
+
