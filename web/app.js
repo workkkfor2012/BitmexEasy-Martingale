@@ -21,6 +21,7 @@ start.onclick = () => {
         API_SECRET: $('API_SECRET').value,
     }
     let s = JSON.stringify(obj)
+    console.log(s)
     ws.send(s)
 }
 
