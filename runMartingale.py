@@ -18,87 +18,93 @@ def printlog(message):
 
 
 class BitmexWS:
-    def trigger(self):
-        self.isInOrder = False
-
+    def handleSupportAndPressurePrice(self,lastprice):
+        if lastprice < self.lowcontrolPriceline:
+            if self.bc.pos > 0 and self.cengshu >= 4:
+                # 关键点位上，持仓逆向，且层数过高，平仓避避风头
+                printlog(
+                    "关键点位上，持仓逆向，且层数过高，平仓避避风头 self.bc.pos = " + str(self.bc.pos) + " self.cengshu = " + str(
+                        self.cengshu))
+                self.orderClose()
+                return True
+        elif lastprice > self.highcontrolPriceline:
+            if self.bc.pos < 0 and self.cengshu >= 4:
+                printlog(
+                    "关键点位上，持仓逆向，且层数过高，平仓避避风头 self.bc.pos = " + str(self.bc.pos) + " self.cengshu = " + str(
+                        self.cengshu))
+                self.orderClose()
+                return True
+    def handlehaveLong(self,gap):
+        # 大于止盈点数，平仓
+        if gap > self.targetProfit:
+            printlog("持有多仓，超过盈利点数，平仓:" + str(gap))
+            self.orderClose()
+            # 处理多单亏损
+        else:
+            # 如果亏损超过初始设定，则加多仓
+            if gap < -self.init_jiacanggap:
+                printlog("持有多仓，亏损超过设定点数，加仓: " + str(gap))
+                self.order()
+            else:
+                pass
+                # print("持有多仓，不触发平仓和加仓 gap = "+str(gap))
+    def handlehaveShort(self,gap):
+        if gap < -self.targetProfit:
+            printlog("持有空仓，超过盈利点数，平仓:" + str(gap))
+            self.orderClose()
+            # 处理空单亏损
+        else:
+            # 价格上升到空仓开仓价格超过初始设定，则加空仓
+            if gap > self.init_jiacanggap:
+                printlog("持有空仓，亏损超过设定点数，加仓" + str(gap))
+                self.order()
+            else:
+                pass
+                # print("持有空仓，不触发平仓和加仓 gap = " + str(gap))
     def onMessage(self, message):
-        # print(message)
         a1 = message["data"]
-        # print(a1)
-        # print(a1[0])
         b = 'lastPrice' in a1[0]
         c = 'timestamp' in a1[0]
+        #过滤 websocket 信息，只需要最新价格
         if b and c:
             lastprice = float(a1[0]['lastPrice'])
-            #print("lastprice = "+str(lastprice))
             timestamp = a1[0]['timestamp']
-
             # 同步状态
             sendToAll({
                 "lastprice": lastprice
             })
-
+            #如果存在仓位，gap就是当前仓位的盈利或者亏损的点数
             gap = lastprice - self.bc.avgPrice
+            # 每十次websocket返回信息，就打印一次当前的状态信息
             if self.n % 10 == 0:
                 printlog("lastprice = " + str(lastprice) + "self.bc.pos:" + str(self.prepos) + " gap = " + str(
                     gap) + " self.init_zhiying = " + str(self.targetProfit) + " self.cengshu = " + str(self.cengshu))
             self.n = self.n+1
-            if lastprice < self.lowcontrolPriceline:
-                if self.bc.pos > 0 and self.cengshu >= 5:
-                    # 关键点位上，持仓逆向，且层数过高，平仓避避风头
-                    printlog(
-                        "关键点位上，持仓逆向，且层数过高，平仓避避风头 self.bc.pos = " + str(self.bc.pos) + " self.cengshu = " + str(
-                            self.cengshu))
-                    self.orderClose()
-            elif lastprice > self.highcontrolPriceline:
-                if self.bc.pos < 0 and self.cengshu >= 5:
-                    printlog(
-                        "关键点位上，持仓逆向，且层数过高，平仓避避风头 self.bc.pos = " + str(self.bc.pos) + " self.cengshu = " + str(
-                            self.cengshu))
-                    self.orderClose()
+
+            # 如果仓位变化了，那么一直请求获得最新的仓位，如果仓位跟本地的对比，有变化了，才继续执行
             isshouldgo = self.isAfterOrderPosChange()
             if isshouldgo == False:
                 return
-                # 没有仓位，立刻开仓
-            print("prepos", self.prepos)
+
+            # 处理价格到了设定好的压力位，支撑位，平仓
+            if self.handleSupportAndPressurePrice(lastprice)==True:
+                return
+
             if self.prepos == 0:
                 printlog("无仓位立刻开仓")
                 self.order()
             else:
+                #为了处理没有仓位，gap会等于当前价格的时候
                 if gap > 1000:
                     return
                 # 当前持有多仓
-
                 if self.prepos > 0:
-                    # 大于止盈点数，平仓
-                    if gap > self.zhiying():
-                        printlog("持有多仓，超过盈利点数，平仓:" + str(gap))
-                        self.orderClose()
-                    # 处理多单亏损
-                    else:
-                        # 如果亏损超过初始设定，则加多仓
-                        if gap < -self.init_jiacanggap:
-                            printlog("持有多仓，亏损超过设定点数，加仓: " + str(gap))
-                            self.order()
-                        else:
-                            pass
-                            #print("持有多仓，不触发平仓和加仓 gap = "+str(gap))
+                  self.handlehaveLong(gap)
                 # 当前持有空仓
                 elif self.prepos < 0:
-                    # 价格下跌到空仓开仓价格100点，止盈
-                    if gap < -self.zhiying():
-                        printlog("持有空仓，超过盈利点数，平仓:" + str(gap))
-                        self.orderClose()
-                    # 处理空单亏损
-                    else:
-                        # 价格上升到空仓开仓价格超过初始设定，则加空仓
-                        if gap > self.init_jiacanggap:
-                            printlog("持有空仓，亏损超过设定点数，加仓" + str(gap))
-                            self.order()
-                        else:
-                            pass
-                            #print("持有空仓，不触发平仓和加仓 gap = " + str(gap))
+                    self.handlehaveShort(gap)
 
+    #平仓
     def orderClose(self):
         self.isInOrder = True
         self.bc.orderClose()
@@ -106,7 +112,7 @@ class BitmexWS:
         self.mypos = 0
         self.init_jiacanggap = 10
         self.isPosChange = True
-
+    #下单
     def order(self):
         self.isInOrder = True
         printlog("self.cengshu = " + str(self.cengshu))
@@ -114,49 +120,7 @@ class BitmexWS:
             self.bc.orderauto(1)
         else:
             self.bc.orderauto(abs(self.prepos) * 2)
-            # if self.bc.pos>self.mypos*3:
-            #     self.bc.orderauto(self.mypos * 2)
-            # else:
-            #
-            # #self.bc.orderauto(self.mypos*2)
-            # self.mypos = self.mypos + self.mypos * 2
         self.cengshu = self.cengshu + 1
-        if self.cengshu == 1:
-            self.targetProfit = 10
-            self.init_jiacanggap = 10
-        elif self.cengshu == 2:
-            self.targetProfit = 15
-            self.init_jiacanggap = 15
-        elif self.cengshu == 3:
-            self.targetProfit = 50
-            self.init_jiacanggap = 70
-        elif self.cengshu == 4:
-            self.targetProfit = 50
-            self.init_jiacanggap = 70
-        elif self.cengshu == 5:
-            self.targetProfit = 50
-            self.init_jiacanggap = 70
-        elif self.cengshu == 6:
-            self.targetProfit = 50
-            self.init_jiacanggap = 70
-        elif self.cengshu == 7:
-            self.targetProfit = 50
-            self.init_jiacanggap = 70
-        elif self.cengshu == 8:
-            self.targetProfit = 50
-            self.init_jiacanggap = 70
-        elif self.cengshu == 9:
-            self.targetProfit = 20
-            self.init_jiacanggap = 160
-        elif self.cengshu == 10:
-            self.targetProfit = 20
-            self.init_jiacanggap = 160
-        elif self.cengshu == 11:
-            self.targetProfit = 20
-            self.init_jiacanggap = 160
-        elif self.cengshu == 12:
-            self.targetProfit = 20
-            self.init_jiacanggap = 160
         self.isPosChange = True
 
     def isAfterOrderPosChange(self):
@@ -180,9 +144,6 @@ class BitmexWS:
         else:
             return True
 
-    def zhiying(self):
-        return self.targetProfit
-
     def __init__(self):
         self.isRun = False
 
@@ -195,7 +156,6 @@ class BitmexWS:
             return
         self.isRun = True        
         print('开始运行', settingidc)
-
 
         # 下限价格
         self.lowcontrolPriceline = settingidc["low"]
