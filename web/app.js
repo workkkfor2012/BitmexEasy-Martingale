@@ -12,9 +12,9 @@ ws.onmessage = (e) => {
 
 start.onclick = () => {
     let obj = {
-        supportPrice: $('supportPrice').value,
-        pressurePrice: $('pressurePrice').value,
-        targetPrice: $('targetPrice').value,
+        supportPrice: $('low').value,
+        pressurePrice: $('high').value,
+        targetPrice: $('targetProfit').value,
         priceGap: $('priceGap').value,
         initPos: $('initPos').value,
         API_KEY: $('API_KEY').value,
