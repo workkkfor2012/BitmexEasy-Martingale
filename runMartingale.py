@@ -70,9 +70,9 @@ class BitmexWS:
             lastprice = float(a1[0]['lastPrice'])
             timestamp = a1[0]['timestamp']
             # 同步状态
-            sendToAll({
-                "lastprice": lastprice
-            })
+            # sendToAll({
+            #     "lastprice": lastprice
+            # })
             #如果存在仓位，gap就是当前仓位的盈利或者亏损的点数
             gap = lastprice - self.bc.avgPrice
             # 每十次websocket返回信息，就打印一次当前的状态信息
@@ -158,19 +158,19 @@ class BitmexWS:
         print('开始运行', settingidc)
 
         # 下限价格
-        self.lowcontrolPriceline = settingidc["low"]
+        self.lowcontrolPriceline = float(settingidc["low"])
         print("self.lowcontrolPriceline", self.lowcontrolPriceline)
         # 上限价格
-        self.highcontrolPriceline = settingidc["high"]
+        self.highcontrolPriceline = float(settingidc["high"])
         print("self.highcontrolPriceline", self.highcontrolPriceline)
         # 赚了多少点就卖
-        self.targetProfit = settingidc["targetProfit"]
+        self.targetProfit = float(settingidc["targetProfit"])
         print("self.targetProfit", self.targetProfit)
         # 每次加仓的价格间隔
-        self.init_jiacanggap = settingidc["priceGap"]
+        self.init_jiacanggap = float(settingidc["priceGap"])
         print("self.init_jiacanggap", self.init_jiacanggap)
         # 初始仓位
-        self.initorderPos = settingidc["initPos"]
+        self.initorderPos = float(settingidc["initPos"])
         print("self.initorderPos", self.initorderPos)
         API_KEY = settingidc["API_KEY"]
         print("API_KEY", API_KEY)
