@@ -20,8 +20,19 @@ start.onclick = () => {
         API_KEY: $('API_KEY').value,
         API_SECRET: $('API_SECRET').value,
     }
+
     let s = JSON.stringify(obj)
-    console.log(s)
+
+    localStorage.setItem('s', s)
+
     ws.send(s)
 }
 
+let dic = JSON.parse(localStorage.getItem('s'))
+$('low').value = dic.low
+$('high').value = dic.high
+$('targetProfit').value = dic.targetProfit
+$('priceGap').value = dic.priceGap
+$('initPos').value = dic.initPos
+$('API_KEY').value = dic.API_KEY
+$('API_SECRET').value = dic.API_SECRET
