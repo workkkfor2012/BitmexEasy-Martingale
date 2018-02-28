@@ -240,8 +240,8 @@ async def hello(ws, path):
             str = await ws.recv()
             print('recv')
             bws.startRun(parse(str))
-        except(e):
-            print('exit', e)
+        except:
+            print('exit')
             clients.remove(ws)
             break
 
