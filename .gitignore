@@ -102,4 +102,5 @@ ENV/
 
 .idea/
 log1.txt
+log.txt
 .vscode/
